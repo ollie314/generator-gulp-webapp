@@ -54,8 +54,6 @@ module.exports = generators.Base.extend({
   },
 
   prompting: function () {
-    var done = this.async();
-
     if (!this.options['skip-welcome-message']) {
       this.log(yosay('\'Allo \'allo! Out of the box I include HTML5 Boilerplate, jQuery, and a gulpfile to build your app.'));
     }
@@ -63,7 +61,7 @@ module.exports = generators.Base.extend({
     var prompts = [{
       type: 'checkbox',
       name: 'features',
-      message: 'What more would you like?',
+      message: 'Which additional features would you like to include?',
       choices: [{
         name: 'Sass',
         value: 'includeSass',
@@ -87,7 +85,7 @@ module.exports = generators.Base.extend({
       }
     }];
 
-    this.prompt(prompts, function (answers) {
+    return this.prompt(prompts).then(function (answers) {
       var features = answers.features;
 
       function hasFeature(feat) {
@@ -101,15 +99,14 @@ module.exports = generators.Base.extend({
       this.includeModernizr = hasFeature('includeModernizr');
       this.includeJQuery = answers.includeJQuery;
 
-      done();
     }.bind(this));
   },
 
   writing: {
     gulpfile: function () {
       this.fs.copyTpl(
-        this.templatePath('gulpfile.babel.js'),
-        this.destinationPath('gulpfile.babel.js'),
+        this.templatePath('gulpfile.js'),
+        this.destinationPath('gulpfile.js'),
         {
           date: (new Date).toISOString().split('T')[0],
           name: this.pkg.name,

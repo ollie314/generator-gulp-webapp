@@ -1,14 +1,13 @@
 'use strict';
 var path = require('path');
-var helpers = require('yeoman-generator').test;
+var helpers = require('yeoman-test');
 var assert = require('yeoman-assert');
 
 describe('Babel feature', function () {
   describe('on', function () {
     before(function (done) {
       helpers.run(path.join(__dirname, '../app'))
-        .inDir(path.join(__dirname, 'temp'))
-        .withOptions({'skip-install': true, babel: true})
+        .withOptions({babel: true})
         .withPrompts({features: []})
         .on('end', done);
     });
@@ -23,19 +22,18 @@ describe('Babel feature', function () {
     });
 
     it('should add the scripts task', function () {
-      assert.fileContent('gulpfile.babel.js', "gulp.task('scripts'");
-      assert.fileContent('gulpfile.babel.js', "['styles', 'scripts']");
-      assert.fileContent('gulpfile.babel.js', "['styles', 'scripts', 'fonts']");
-      assert.fileContent('gulpfile.babel.js', "gulp.watch('app/scripts/**/*.js', ['scripts'])");
-      assert.fileContent('gulpfile.babel.js', "'/scripts': '.tmp/scripts',");
+      assert.fileContent('gulpfile.js', "gulp.task('scripts'");
+      assert.fileContent('gulpfile.js', "['styles', 'scripts']");
+      assert.fileContent('gulpfile.js', "['styles', 'scripts', 'fonts']");
+      assert.fileContent('gulpfile.js', "gulp.watch('app/scripts/**/*.js', ['scripts'])");
+      assert.fileContent('gulpfile.js', "'/scripts': '.tmp/scripts',");
     });
   });
 
   describe('off', function () {
     before(function (done) {
       helpers.run(path.join(__dirname, '../app'))
-        .inDir(path.join(__dirname, 'temp'))
-        .withOptions({'skip-install': true, babel: false})
+        .withOptions({babel: false})
         .withPrompts({features: []})
         .on('end', done);
     });
@@ -50,12 +48,12 @@ describe('Babel feature', function () {
     });
 
     it('shouldn\'t add the scripts task', function () {
-      assert.noFileContent('gulpfile.babel.js', "gulp.task('scripts'");
-      assert.fileContent('gulpfile.babel.js', "['styles']");
-      assert.fileContent('gulpfile.babel.js', "['styles', 'fonts']");
-      assert.fileContent('gulpfile.babel.js', "'app/scripts/**/*.js',");
-      assert.noFileContent('gulpfile.babel.js', "gulp.watch('app/scripts/**/*.js', ['scripts'])");
-      assert.fileContent('gulpfile.babel.js', "'/scripts': 'app/scripts',");
+      assert.noFileContent('gulpfile.js', "gulp.task('scripts'");
+      assert.fileContent('gulpfile.js', "['styles']");
+      assert.fileContent('gulpfile.js', "['styles', 'fonts']");
+      assert.fileContent('gulpfile.js', "'app/scripts/**/*.js',");
+      assert.noFileContent('gulpfile.js', "gulp.watch('app/scripts/**/*.js', ['scripts'])");
+      assert.fileContent('gulpfile.js', "'/scripts': 'app/scripts',");
     });
   });
 });
